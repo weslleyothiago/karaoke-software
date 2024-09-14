@@ -1,0 +1,7 @@
+{
+  "name": "karaoke-software",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
