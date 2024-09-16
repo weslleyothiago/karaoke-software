@@ -1,20 +1,27 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Blank
+<ion-header>
+  <ion-toolbar >
+    <ion-title class="text-center">
+      Fazer login
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+<ion-content>
+  <div id="container" class="flex flex-col items-center">
+    <img src="" alt="LOGO">
+    <strong><span>Milhões de músicas à sua espera.</span></strong>
+    <strong><span>Só no K-beat.</span></strong>
+    <div *ngIf="user$ | async as user; else notLoggedIn">
+      <p>Bem-vindo, {{ user.displayName }}!</p>
+      <p>Email: {{ user.email }}</p>
+      <img [src]="user.photoURL" alt="Foto do usuário">
+      <button (click)="handleSignOut()">Logout</button>
+    </div>
+    
+    <ng-template #notLoggedIn>
+      <p>Você não está logado.</p>
+      <ion-button (click)="handleGoogleSignIn()">Login com Google</ion-button>
+    </ng-template>
+    
   </div>
 </ion-content>
