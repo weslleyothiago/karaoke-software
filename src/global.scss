@@ -38,3 +38,22 @@
 
 /* Importando tailwind */
 @import './styles/tailwind.scss';
+
+@font-face {
+    font-family: 'japa';
+    src: url('../src/assets/fonts/sughoiy-font/Sughoiy-RplYe.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
+  
+  .font-japa {
+    font-family: 'japa', sans-serif;
+  }
+
+  ::ng-deep ion-input .label-text{
+    color: white;
+  }
+
+  ion-select::part(label){
+    color: white
+}

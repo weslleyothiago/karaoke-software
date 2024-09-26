@@ -5,6 +5,8 @@ import { IonicModule } from '@ionic/angular';
 import { LoginPagePageRoutingModule } from './login-page-routing.module';
 import { LoginPagePage } from './login-page.page';
 import { ReactiveFormsModule } from '@angular/forms';
+import { RegisterModalComponent } from 'src/app/components/register-modal/register-modal.component';
+import { EsqueciSenhaComponent } from 'src/app/components/esqueci-senha/esqueci-senha.component';
 
 @NgModule({
   imports: [
@@ -12,8 +14,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     FormsModule,
     IonicModule,
     LoginPagePageRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
-  declarations: [LoginPagePage]
+  declarations: [LoginPagePage, RegisterModalComponent, EsqueciSenhaComponent]
 })
 export class LoginPagePageModule {}
