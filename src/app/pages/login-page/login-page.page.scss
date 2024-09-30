@@ -1,17 +1,9 @@
 body {
-  margin: 0px
-}
-.container {
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center
+  margin: 0px;
 }
 
 .link-underline::after {
-  content: '';
+  content: "";
   position: absolute;
   left: 0; /* Começa à esquerda */
   bottom: 0; /* Alinha no final do link */
@@ -24,4 +16,3 @@ body {
 .link-underline:hover::after {
   width: 100%; /* A linha cresce até a largura completa do link */
 }
-

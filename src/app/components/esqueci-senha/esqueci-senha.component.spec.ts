@@ -9,8 +9,8 @@ describe('EsqueciSenhaComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ EsqueciSenhaComponent ],
-      imports: [IonicModule.forRoot()]
+      declarations: [EsqueciSenhaComponent],
+      imports: [IonicModule.forRoot()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(EsqueciSenhaComponent);

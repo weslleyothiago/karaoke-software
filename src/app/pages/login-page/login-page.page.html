@@ -1,18 +1,51 @@
 <ion-content>
   <!-- Segunda metade com o conteúdo centralizado e com fundo e sombra -->
-  <div class="container">
-    <div class="w-2/3 p-8 shadow-lg shadow-black rounded-3xl flex flex-col text-center items-center justify-center">
+  <div class="h-screen flex items-center justify-center">
+    <div
+      class="w-2/3 p-8 shadow-lg shadow-black rounded-3xl flex flex-col text-center items-center justify-center"
+    >
+    <ion-text *ngIf="mensagemErro" class="text-center bg-red-700" >{{ mensagemErro }}</ion-text>
+
       <strong><span>Milhões de músicas à sua espera</span></strong>
       <strong><span>Só no Daisuke!</span></strong>
-      <form class="w-full flex flex-col items-center">
-        <ion-input label="E-mail" label-placement="floating" fill="solid" placeholder="" class="w-5/6 mt-4"></ion-input>
-        <ion-input type="password" label="Senha" label-placement="floating" fill="solid" placeholder="" class="w-5/6 mt-4"></ion-input>
+      <form [formGroup]="formularioLogar" class="w-full flex flex-col items-center">
+        <ion-input
+          type="email"
+          formControlName="email"
+          errorText="Insira seu endereço de e-mail do Daisuke."
+          label="E-mail"
+          label-placement="floating"
+          fill="solid"
+          placeholder=""
+          class="w-5/6 mt-4"
+        ></ion-input>
+        <ion-input
+          formControlName="senha"
+          errorText="Por favor, insira sua senha."
+          type="password"
+          label="Senha"
+          label-placement="floating"
+          fill="solid"
+          placeholder=""
+          class="w-5/6 mt-4"
+        ></ion-input>
         <div class="w-5/6 flex justify-end mt-2">
-          <a class="text-purple-600 link-underline relative cursor-pointer items-end" (click)="abreModalEsqueciSenha()">Esqueceu sua senha?</a>
-        </div>  
-        <ion-button shape="round" class="mt-6 w-5/6 h-12">Entrar</ion-button>
+          <a
+            class="text-purple-600 link-underline relative cursor-pointer items-end"
+            (click)="abreModalEsqueciSenha()"
+            >Esqueceu sua senha?</a
+          >
+        </div>
+        <ion-button shape="round" class="mt-6 w-5/6 h-12" (click)="logarSe()">Entrar</ion-button>
         <div class="w-5/6 flex mt-2 justify-center">
-          <span class="py-3">Não tem uma conta? <a class="text-purple-600 link-underline relative cursor-pointer" (click)="abreModalRegistrar()">Registre-se agora</a></span>
+          <span class="py-3"
+            >Não tem uma conta?
+            <a
+              class="text-purple-600 link-underline relative cursor-pointer"
+              (click)="abreModalRegistrar()"
+              >Registre-se agora</a
+            ></span
+          >
         </div>
       </form>
     </div>

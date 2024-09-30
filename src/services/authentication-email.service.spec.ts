@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { AuthenticatioEmailService } from './authentication-email.service';
+import { AuthenticationEmailService } from './authentication-email.service';
 
 describe('AuthenticatioEmailService', () => {
-  let service: AuthenticatioEmailService;
+  let service: AuthenticationEmailService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(AuthenticatioEmailService);
+    service = TestBed.inject(AuthenticationEmailService);
   });
 
   it('should be created', () => {

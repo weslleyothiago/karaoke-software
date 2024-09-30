@@ -1,14 +1,25 @@
 <ion-header class="ion-no-border flex">
-    <ion-title class="font-japa p-8 text-center" style="font-size: x-large;">Daisuke Karaokê</ion-title>
+  <ion-title class="font-japa p-8 text-center" style="font-size: x-large"
+    >Daisuke Karaokê</ion-title
+  >
   <button
-    (click)="fechaModal()"
+    (click)="fecharModal()"
     aria-label="Fechar modal"
-    class="group absolute top-4 right-4 flex items-center justify-center w-8 h-8 bg-transparent rounded-full transition duration-300 ease-in-out">
-    <div class="relative w-8 h-8 flex items-center justify-center bg-transparent rounded-full transition duration-300 ease-in-out group-hover:bg-white group-hover:bg-opacity-20">
-      <div class="absolute top-1/2 left-1/2 w-4 h-0.5 bg-white rotate-45 transform -translate-x-1/2 -translate-y-1/2 rounded-full transition duration-300 ease-in-out group-hover:bg-purple-600"></div>
-      <div class="absolute top-1/2 left-1/2 w-4 h-0.5 bg-white -rotate-45 transform -translate-x-1/2 -translate-y-1/2 rounded-full transition duration-300 ease-in-out group-hover:bg-purple-600"></div>
+    class="group absolute top-4 right-4 flex items-center justify-center w-8 h-8 bg-transparent rounded-full transition duration-300 ease-in-out"
+  >
+    <div
+      class="relative w-8 h-8 flex items-center justify-center bg-transparent rounded-full transition duration-300 ease-in-out group-hover:bg-white group-hover:bg-opacity-20"
+    >
+      <div
+        class="absolute top-1/2 left-1/2 w-4 h-0.5 bg-white rotate-45 transform -translate-x-1/2 -translate-y-1/2 rounded-full transition duration-300 ease-in-out group-hover:bg-purple-600"
+      ></div>
+      <div
+        class="absolute top-1/2 left-1/2 w-4 h-0.5 bg-white -rotate-45 transform -translate-x-1/2 -translate-y-1/2 rounded-full transition duration-300 ease-in-out group-hover:bg-purple-600"
+      ></div>
     </div>
-    <span class="absolute left-1/2 bottom-[-30px] -translate-x-1/2 opacity-0 text-xs text-white bg-gray-700 px-1 py-1 rounded transition-opacity duration-300 ease-in-out group-hover:opacity-100 group-hover:delay-500 pointer-events-none whitespace-nowrap">
+    <span
+      class="absolute left-1/2 bottom-[-30px] -translate-x-1/2 opacity-0 text-xs text-white bg-gray-700 px-1 py-1 rounded transition-opacity duration-300 ease-in-out group-hover:opacity-100 group-hover:delay-500 pointer-events-none whitespace-nowrap"
+    >
       Fechar
     </span>
   </button>
@@ -18,45 +29,127 @@
   <!-- Renderiza o template correto -->
   <ng-container [ngTemplateOutlet]="getTemplate()"></ng-container>
 
-<ng-template #telaDeEmail>
-  <div class="container items-center flex flex-col">
-    <ion-title class="mt-0 text-base">Registre-se agora mesmo para começar a curtir!</ion-title>
-    <div class="flex flex-col items-center w-5/6 mt-6">
-      <div class="flex flex-col w-5/6 justify-start">
-        <span class="text-gray-400">Etapa 1 de 3</span>
-        <span class="font-semibold">Informe seu E-mail</span>
-      </div>
-      <form [formGroup]="regForm" class="w-full flex flex-col items-center">
-        <div class="flex items-center w-5/6 mt-6">
-          <hr class="flex-grow border-t border-gray-400">
-          <span class="mx-4 text-gray-500">ou</span>
-          <hr class="mx-0 flex-grow border-t border-gray-400">
+  <ng-template #telaDeEmail>
+    <div class="container items-center flex flex-col">
+      <ion-title class="mt-0 text-base"
+        >Registre-se agora mesmo para começar a curtir!</ion-title
+      >
+      <div class="flex flex-col items-center w-5/6 mt-6">
+        <div class="flex flex-col w-5/6 justify-start">
+          <span class="text-gray-400">Etapa 1 de 3</span>
+          <span class="font-semibold">Informe seu E-mail</span>
         </div>
-        <ion-input name="email" formControlName="email" label="E-mail" label-placement="floating" fill="solid" placeholder="nome@domínio.com" class="w-5/6 mt-4"></ion-input>
-        <ion-button shape="round" class="mt-6 w-5/6 h-12" [disabled]="regForm.get('email')?.invalid" (click)="ativarTemplate('telaDeSenha')">Avançar</ion-button>
-    </form>
-    </div>
-  </div>
-</ng-template>
+        <form
+          [formGroup]="formularioRegistro"
+          class="w-full flex flex-col items-center"
+        >
+          <div class="flex items-center w-5/6 mt-6">
+            <hr class="flex-grow border-t border-gray-400" />
+            <span class="mx-4 text-gray-500">ou</span>
+            <hr class="mx-0 flex-grow border-t border-gray-400" />
+          </div>
+          <ion-input
+            autofocus="true"
+            name="email"
+            formControlName="email"
+            label="E-mail"
+            label-placement="floating"
+            fill="solid"
+            placeholder="nome@domínio.com"
+            class="w-5/6 mt-4"
+          ></ion-input>
 
-<!-- Template para tela de Senha -->
-<ng-template #telaDeSenha>
-  <div class="container items-center flex flex-col">
-    <div class="flex flex-col items-center w-5/6 mt-6">
-    <div class="flex flex-col w-5/6 justify-start">
-      <span class="text-gray-400">Etapa 2 de 3</span>
-      <span class="font-semibold">Crie uma senha</span>
-    </div>
-    <form [formGroup]="regForm" class="w-full flex flex-col items-center">
-        <ion-input name="senha" type="password" formControlName="senha" label="Senha" label-placement="floating" fill="solid" class="w-5/6 mt-4">
-          <ion-input-password-toggle slot="end" color="light"></ion-input-password-toggle>
-        </ion-input>
-        <ion-button shape="round" class="mt-6 w-5/6 h-12" (click)="ativarTemplate('telaDeNomeENasc')">Avançar</ion-button>
-      </form>
-    </div>
-  </div>
-</ng-template>
+           <!-- Validações do campo E-mail -->
+           <div *ngIf="this.formularioRegistro.controls?.['email']?.touched" class="mt-2 w-5/6">
 
+            <!-- Verificação de campo obrigatório -->
+            <ion-text *ngIf="controlErros['email'].errors?.['required']" color="danger" class="flex items-baseline text-base">
+              <ion-icon name="alert-circle" class="mr-2"></ion-icon>
+              O campo de E-mail é obrigatório.
+            </ion-text>
+
+            <!-- Verificação de estrutura do E-mail -->
+            <ion-text *ngIf="controlErros['email'].errors?.['pattern']" color="danger" class="flex items-baseline text-base">
+              <ion-icon name="alert-circle" class="mr-2"></ion-icon>
+              Esse e-mail é inválido. O formato correto é assim: exemplo&#64;email.com
+            </ion-text>
+
+          </div>
+
+          <ion-button
+            shape="round"
+            class="mt-6 w-5/6 h-12"
+            [disabled]="formularioRegistro.get('email')?.invalid"
+            (click)="ativarTemplate('telaDeSenha')"
+            >Avançar</ion-button
+          >
+        </form>
+      </div>
+    </div>
+  </ng-template>
+
+  <!-- Template para tela de Senha -->
+  <ng-template #telaDeSenha>
+    <div class="container items-center flex flex-col">
+      <div class="flex flex-col items-center w-5/6 mt-6">
+        <div class="flex flex-col w-5/6 justify-start">
+          <span class="text-gray-400">Etapa 2 de 3</span>
+          <span class="font-semibold">Crie uma senha</span>
+        </div>
+        <form
+          [formGroup]="formularioRegistro"
+          class="w-full flex flex-col items-center"
+        >
+          <ion-input
+            autofocus="true"
+            name="senha"
+            type="password"
+            formControlName="senha"
+            label="Senha"
+            label-placement="floating"
+            fill="solid"
+            class="w-5/6 mt-4"
+          >
+            <ion-input-password-toggle
+              slot="end"
+              color="light"
+            ></ion-input-password-toggle>
+          </ion-input>
+
+          <!-- Validações do campo Senha -->
+          <div *ngIf="this.formularioRegistro.controls?.['senha']" class="mt-2 w-5/6">
+
+            <!-- Verifica se tem letra -->
+            <ion-text [color]="senhaValida.temLetra ? 'success' : 'danger'" class="flex items-baseline text-base">
+              <ion-icon name="alert-circle" class="mr-2"></ion-icon>
+              Conter pelo menos uma letra
+            </ion-text>
+          
+            <!-- Verifica se tem número -->
+            <ion-text [color]="senhaValida.temNumero ? 'success' : 'danger'" class="flex items-baseline text-base">
+              <ion-icon name="alert-circle" class="mr-2"></ion-icon>
+              Conter pelo menos um número
+            </ion-text>
+          
+            <!-- Verifica se tem no mínimo 8 caracteres -->
+            <ion-text [color]="senhaValida.tamanhoMinimo ? 'success' : 'danger'" class="flex items-baseline text-base">
+              <ion-icon name="alert-circle" class="mr-2"></ion-icon>
+              Ter no mínimo 8 caracteres
+            </ion-text>
+
+          </div>
+          
+          <ion-button
+            shape="round"
+            class="mt-6 w-5/6 h-12"
+            [disabled]="formularioRegistro.get('senha')?.invalid"
+            (click)="ativarTemplate('telaDeNomeENasc')"
+            >Avançar</ion-button
+          >
+        </form>
+      </div>
+    </div>
+  </ng-template>
 
   <!-- Template para tela de Nome e Nascimento -->
   <ng-template #telaDeNomeENasc>
@@ -66,33 +159,89 @@
           <span class="text-gray-400">Etapa 3 de 3</span>
           <span class="font-semibold">Fale de você</span>
         </div>
-        <form [formGroup]="regForm" class="w-full flex flex-col items-center">
-          <ion-input formControlName="nome" label="Nome" label-placement="floating" fill="solid" helperText="Este nome aparecerá no seu perfil" errorText="Insira um nome para seu perfil!" class="w-5/6 mt-4"></ion-input>
+        <form
+          [formGroup]="formularioRegistro"
+          class="w-full flex flex-col items-center"
+        >
+          <ion-input
+            autofocus="true"
+            formControlName="nome"
+            label="Nome"
+            label-placement="floating"
+            fill="solid"
+            helperText="Este nome aparecerá no seu perfil"
+            errorText="Insira um nome para seu perfil!"
+            class="w-5/6 mt-4"
+          ></ion-input>
 
           <div class="flex mt-4 justify-start w-5/6">
             <ion-text>
               <p>Data de nascimento</p>
             </ion-text>
           </div>
-<!-- Select para o dia -->
-<div class="flex w-5/6">
-  <ion-select interface="popover" label="Dia" label-placement="floating" fill="solid" formControlName="dia" (ionChange)="onDateChange()">
-    <ion-select-option *ngFor="let d of dias" [value]="d">{{ d }}</ion-select-option>
-  </ion-select>
 
-  <ion-select interface="popover" label="Mês" label-placement="floating" fill="solid" formControlName="mes" (ionChange)="onDateChange()">
-    <ion-select-option *ngFor="let m of meses" [value]="m.value">{{ m.name }}</ion-select-option>
-  </ion-select>
+          <!-- Select para o dia -->
+          <div class="flex w-5/6">
+            <ion-select
+              interface="popover"
+              label="Dia"
+              label-placement="floating"
+              fill="solid"
+              formControlName="dia"
+              (ionChange)="mudarData()"
+            >
+              <ion-select-option *ngFor="let d of dias" [value]="d">{{
+                d
+              }}</ion-select-option>
+            </ion-select>
 
-  <ion-select interface="popover" label="Ano" label-placement="floating" fill="solid" formControlName="ano" (ionChange)="onDateChange()">
-    <ion-select-option *ngFor="let a of anos" [value]="a">{{ a }}</ion-select-option>
-  </ion-select>
-</div>
+            <ion-select
+              interface="popover"
+              label="Mês"
+              label-placement="floating"
+              fill="solid"
+              formControlName="mes"
+              (ionChange)="mudarData()"
+            >
+              <ion-select-option *ngFor="let m of meses" [value]="m.value">{{
+                m.name
+              }}</ion-select-option>
+            </ion-select>
 
+            <ion-select
+              interface="popover"
+              label="Ano"
+              label-placement="floating"
+              fill="solid"
+              formControlName="ano"
+              (ionChange)="mudarData()"
+            >
+              <ion-select-option *ngFor="let a of anos" [value]="a">{{
+                a
+              }}</ion-select-option>
+            </ion-select>
+          </div>
 
-          <ion-button shape="round" class="mt-6 w-5/6 h-12" (click)="ativarTemplate('telaDeEmail')">Começar o show</ion-button>
+          <!-- Validações do campo Dia -->
+          <div *ngIf="this.formularioRegistro.controls?.['dia']?.touched" class="mt-2 w-5/6">
+
+            <!-- Verificação de campo obrigatório -->
+            <ion-text *ngIf="controlErros['dia'].errors?.['required']" color="danger" class="flex items-baseline text-base">
+              <ion-icon name="alert-circle" class="mr-2"></ion-icon>
+              Selecione os campos mês e ano primeiro
+            </ion-text>
+          </div>
+
+          <ion-button
+            shape="round"
+            class="mt-6 w-5/6 h-12"
+            [disabled]="!formularioRegistro.valid"
+            (click)="registrarSe()"
+            >Começar o show</ion-button
+          >
         </form>
-        </div>
+      </div>
     </div>
   </ng-template>
+
 </ion-content>

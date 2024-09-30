@@ -16,6 +16,6 @@ import { EsqueciSenhaComponent } from 'src/app/components/esqueci-senha/esqueci-
     LoginPagePageRoutingModule,
     ReactiveFormsModule,
   ],
-  declarations: [LoginPagePage, RegisterModalComponent, EsqueciSenhaComponent]
+  declarations: [LoginPagePage, RegisterModalComponent, EsqueciSenhaComponent],
 })
 export class LoginPagePageModule {}

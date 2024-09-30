@@ -32,28 +32,29 @@
  * https://ionicframework.com/docs/theming/dark-mode
  */
 
-/* @import "@ionic/angular/css/palettes/dark.always.css"; */
+ @import "@ionic/angular/css/palettes/dark.always.css"; 
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
-@import "@ionic/angular/css/palettes/dark.system.css";
+/* @import "@ionic/angular/css/palettes/dark.system.css"; */
 
 /* Importando tailwind */
-@import './styles/tailwind.scss';
+@import "./styles/tailwind.scss";
 
 @font-face {
-    font-family: 'japa';
-    src: url('../src/assets/fonts/sughoiy-font/Sughoiy-RplYe.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-  }
-  
-  .font-japa {
-    font-family: 'japa', sans-serif;
-  }
+  font-family: "japa";
+  src: url("../src/assets/fonts/sughoiy-font/Sughoiy-RplYe.ttf")
+    format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
 
-  ::ng-deep ion-input .label-text{
-    color: white;
-  }
+.font-japa {
+  font-family: "japa", sans-serif;
+}
 
-  ion-select::part(label){
-    color: white
+::ng-deep ion-input .label-text {
+  color: white;
+}
+
+ion-select::part(label) {
+  color: white;
 }

@@ -1,15 +1,28 @@
-import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  TemplateRef,
+  ChangeDetectorRef,
+} from '@angular/core';
+import {
+  FormBuilder as FormBuilder,
+  FormGroup,
+  Validators as Validators,
+} from '@angular/forms';
+import { Router } from '@angular/router';
 import { LoadingController, ModalController } from '@ionic/angular';
-import { AuthenticatioEmailService } from 'src/services/authentication-email.service';
+import { AuthenticationEmailService } from 'src/services/authentication-email.service';
 
 @Component({
   selector: 'app-register-modal',
   templateUrl: './register-modal.component.html',
   styleUrls: ['./register-modal.component.scss'],
 })
+
 export class RegisterModalComponent implements OnInit {
-  regForm!: FormGroup;
+  
+  formularioRegistro!: FormGroup;
   templateAtivo: string = 'telaDeEmail';
 
   @ViewChild('telaDeEmail') telaDeEmail!: TemplateRef<any>;
@@ -34,16 +47,19 @@ export class RegisterModalComponent implements OnInit {
   anos: number[] = [];
 
   constructor(
-    public authService:AuthenticatioEmailService,
+    public router: Router,
+    private changeDetectorRef: ChangeDetectorRef,
+    public authService: AuthenticationEmailService,
     public loadingCtrl: LoadingController,
     private modalController: ModalController,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
   ) {}
 
   ngOnInit() {
-    this.regForm = this.formBuilder.group({
-      email: ['', [Validators.required, Validators.email, Validators.pattern("[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$")]],
-      senha: ['', [Validators.required, Validators.pattern("(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"),Validators.minLength(8)]],
+    this.changeDetectorRef.detectChanges();
+    this.formularioRegistro = this.formBuilder.group({
+      email: ['', [Validators.required, Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.(com|net|org|edu|gov|mil)$')]],
+      senha: ['', [Validators.required, Validators.pattern("^(?=.*[A-Za-z])(?=.*\\d).{8,}$")]],
       nome: ['', Validators.required],
       dia: ['', Validators.required],
       mes: ['', Validators.required],
@@ -57,28 +73,71 @@ export class RegisterModalComponent implements OnInit {
     }
 
     // Inicializa os dias com base no mês e no ano
-    this.updateDias();
+    this.atualizarDias();
   }
 
-  get controlErros(){
-    return this.regForm?.controls;
+  get controlErros() {
+    return this.formularioRegistro?.controls;
   }
 
-  async registrarSe(){
-    const loading = await this.loadingCtrl.create();
+  get senhaValida() {
+    const senha = this.formularioRegistro.controls['senha'].value || '';
+    
+    const temLetra = /[A-Za-z]/.test(senha);
+    const temNumero = /\d/.test(senha);
+    const tamanhoMinimo = senha.length >= 8;
+  
+    return {
+      temLetra,
+      temNumero,
+      tamanhoMinimo
+    };
+  }
+
+  async registrarSe() {
+    const loading = await this.loadingCtrl.create({
+      message: 'Registrando...',
+      spinner: 'crescent',
+    });
     await loading.present();
-    if (this.regForm?.valid){
+  
+    if (this.formularioRegistro?.valid) {
+      const email = this.formularioRegistro.get('email')?.value;
+      const senha = this.formularioRegistro.get('senha')?.value;
       
-      const user = await this.authService.registrarUsuario(email, senha)
+      try {
+        // Chamando o serviço de autenticação para registrar o usuário
+        const usuario = await this.authService.registrarUsuario(email, senha);
+        console.log('Usuário registrado com sucesso: ', usuario);
+  
+        // Redireciona para a página inicial após o registro bem-sucedido
+        this.router.navigate(['/home']);
+        this.modalController.dismiss();  // Fecha o modal de registro (se aplicável)
+  
+      } catch (error) {
+        console.error('Erro ao registrar usuário: ', error);
+  
+      } finally {
+        await loading.dismiss(); // Sempre fecha o loading, independente de sucesso ou erro
+      }
+  
+    } else {
+      // Se o formulário for inválido, fecha o loading e exibe erro
+      await loading.dismiss();
     }
   }
 
-  fechaModal() {
+
+  
+  
+
+  fecharModal() {
     this.modalController.dismiss();
   }
 
   ativarTemplate(template: string) {
     this.templateAtivo = template;
+    this.changeDetectorRef.detectChanges();
   }
 
   getTemplate() {
@@ -94,13 +153,13 @@ export class RegisterModalComponent implements OnInit {
     }
   }
 
-  onDateChange() {
-    this.updateDias();
+  mudarData() {
+    this.atualizarDias();
   }
 
-  updateDias() {
-    const mes = this.regForm.get('mes')?.value;
-    const ano = this.regForm.get('ano')?.value;
+  atualizarDias() {
+    const mes = this.formularioRegistro.get('mes')?.value;
+    const ano = this.formularioRegistro.get('ano')?.value;
 
     if (mes && ano) {
       const diasNoMes = this.getDiasNoMes(mes, ano);
@@ -111,5 +170,4 @@ export class RegisterModalComponent implements OnInit {
   getDiasNoMes(mes: number, ano: number): number {
     return new Date(ano, mes, 0).getDate();
   }
-
 }
