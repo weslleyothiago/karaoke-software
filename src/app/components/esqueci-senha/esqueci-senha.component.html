@@ -35,15 +35,15 @@
           pra te enviarmos um e-mail de recuperação.</span
         >
       </div>
-      <form class="w-full flex flex-col items-center" [formGroup]="formularioEsqueciSenha">
+      <form class="w-full flex flex-col items-center" [formGroup]="formularioEsqueciSenha" (ngSubmit)="resetarSenha()">
         <ion-input
-        
+          formControlName="email"
           label="E-mail"
           label-placement="floating"
           fill="solid"
           class="w-5/6 mt-4"
         ></ion-input>
-        <ion-button shape="round" class="mt-6 w-5/6 h-12" (click)="resetarSenha()"
+        <ion-button [disabled]="formularioEsqueciSenha.invalid" shape="round" class="mt-6 w-5/6 h-12" type="submit"
           >enviar link</ion-button
         >
       </form>
