@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  firebaseConfig: {
+  firebase: {
     apiKey: 'AIzaSyB6J9EvWTSJz0KMEdtvyIqrBUmRWRg5n3w',
     authDomain: 'daisukekaraoke-auth.firebaseapp.com',
     projectId: 'daisukekaraoke-auth',

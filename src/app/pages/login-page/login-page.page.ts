@@ -4,7 +4,8 @@ import { Router } from '@angular/router';
 import { LoadingController, ModalController } from '@ionic/angular';
 import { EsqueciSenhaComponent } from 'src/app/components/esqueci-senha/esqueci-senha.component';
 import { RegisterModalComponent } from 'src/app/components/register-modal/register-modal.component';
-import { AuthenticationEmailService } from 'src/services/authentication-email.service';
+import { AuthService } from 'src/services/auth.service';
+import { AuthenticationEmailService } from '../../../services/authentication-email.service';
 
 @Component({
   selector: 'app-login-page',
@@ -17,6 +18,7 @@ export class LoginPagePage implements OnInit {
   
   constructor(
     public router: Router,
+    public authServiceGoogle: AuthService,
     public authService: AuthenticationEmailService,
     public loadingCtrl: LoadingController,
     private formBuilder: FormBuilder,
@@ -54,6 +56,7 @@ export class LoginPagePage implements OnInit {
     });
     await loading.present();
   
+    this.formularioLogar.markAllAsTouched();
     if (this.formularioLogar?.valid) {
       const email = this.formularioLogar.get('email')?.value;
       const senha = this.formularioLogar.get('senha')?.value;
@@ -71,7 +74,7 @@ export class LoginPagePage implements OnInit {
         console.error('Erro ao logar usuário: ', error);
         
         // Exibir mensagem de erro
-        this.mensagemErro = 'Nome de usuário ou senha incorretos.';
+        this.mensagemErro = 'E-mail de usuário ou senha incorretos.';
   
       } finally {
         await loading.dismiss(); // Sempre fecha o loading, independente de sucesso ou erro
@@ -80,7 +83,6 @@ export class LoginPagePage implements OnInit {
     } else {
       // Se o formulário for inválido, fecha o loading e exibe uma mensagem de erro
       await loading.dismiss();
-      this.mensagemErro = 'Por favor, preencha todos os campos corretamente.';
     }
   }
 
@@ -101,4 +103,15 @@ export class LoginPagePage implements OnInit {
     });
     return await modal.present();
   }
+
+  // Método para logar com Google
+  async logarComGoogle() {
+    try {
+      await this.authServiceGoogle.fazerLoginComGoogle();
+      this.router.navigate(['/home']);
+    } catch (error) {
+      this.mensagemErro = 'Erro ao tentar logar com o';
+    }
+  }
 }
+

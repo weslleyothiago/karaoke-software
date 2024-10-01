@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, TemplateRef, ViewChild, } from '@angular/core';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
@@ -10,11 +10,16 @@ import { AuthenticationEmailService } from 'src/services/authentication-email.se
   styleUrls: ['./esqueci-senha.component.scss'],
 })
 export class EsqueciSenhaComponent implements OnInit {
+  templateAtivo: string = 'telaEsqueciSenha';
   formularioEsqueciSenha!: FormGroup;
   mensagemErro: string = '';  // Para armazenar mensagens de erro
   mensagemSucesso: string = '';  // Para armazenar mensagem de sucesso
 
+  @ViewChild ('telaEsqueciSenha') telaEsqueciSenha !: TemplateRef<any>;
+  @ViewChild ('telaSucessoEsqueciSenha') telaSucessoEsqueciSenha !: TemplateRef<any>;
+
   constructor(
+    private changeDetectorRef: ChangeDetectorRef,
     public router: Router,
     private formBuilder: FormBuilder,
     public authService: AuthenticationEmailService,
@@ -50,7 +55,23 @@ export class EsqueciSenhaComponent implements OnInit {
     }
   }
 
-  fechaModal() {
+  ativarTemplate(template: string) {
+    this.templateAtivo = template;
+    this.changeDetectorRef.detectChanges();
+  }
+
+  getTemplate(){
+    switch(this.templateAtivo){
+      case 'telaEsqueciSenha':
+        return this.telaEsqueciSenha;
+      case 'telaSucessoEsqueciSenha':
+        return this.telaSucessoEsqueciSenha;
+      default:
+        return this.telaEsqueciSenha;
+    }
+  }
+
+  fecharModal() {
     this.modalController.dismiss();
   }
 }

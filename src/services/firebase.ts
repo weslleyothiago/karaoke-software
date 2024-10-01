@@ -1,12 +1,7 @@
-// Import the functions you need from the SDKs you need
-import { initializeApp } from 'firebase/app';
-import { getAnalytics } from 'firebase/analytics';
+// src/services/firebase.service.ts
+import { initializeApp, getApps, getApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: 'AIzaSyB6J9EvWTSJz0KMEdtvyIqrBUmRWRg5n3w',
   authDomain: 'daisukekaraoke-auth.firebaseapp.com',
@@ -17,7 +12,16 @@ const firebaseConfig = {
   measurementId: 'G-W3WM1VDRTF',
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+// Função para inicializar o Firebase
+export function inicializarFirebase() {
+  // Verifica se o Firebase já foi inicializado
+  if (!getApps().length) {
+    return initializeApp(firebaseConfig);
+  } else {
+    return getApp(); // Retorna a instância existente
+  }
+}
+
+// Inicializa o Auth a partir do app inicializado
+export const app = inicializarFirebase();
 export const auth = getAuth(app);

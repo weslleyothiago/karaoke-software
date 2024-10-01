@@ -15,6 +15,7 @@ import { EsqueciSenhaComponent } from 'src/app/components/esqueci-senha/esqueci-
     IonicModule,
     LoginPagePageRoutingModule,
     ReactiveFormsModule,
+    
   ],
   declarations: [LoginPagePage, RegisterModalComponent, EsqueciSenhaComponent],
 })

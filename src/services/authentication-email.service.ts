@@ -1,29 +1,38 @@
+// src/services/authentication-email.service.ts
 import { Injectable } from '@angular/core';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { auth } from './firebase';
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  sendPasswordResetEmail,
+  signOut,
+  User,
+  UserCredential,
+} from 'firebase/auth';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthenticationEmailService {
-  constructor(public ngFireAuth: AngularFireAuth) {}
+  constructor() {}
 
-  async registrarUsuario(email: string, senha: string) {
-    return await this.ngFireAuth.createUserWithEmailAndPassword(email, senha);
+  async registrarUsuario(email: string, senha: string): Promise<UserCredential> {
+    return await createUserWithEmailAndPassword(auth, email, senha);
   }
 
-  async logarUsuario(email: string, senha: string) {
-    return await this.ngFireAuth.signInWithEmailAndPassword(email, senha);
+  async logarUsuario(email: string, senha: string): Promise<UserCredential> {
+    return await signInWithEmailAndPassword(auth, email, senha);
   }
 
-  async resetarSenha(email: string) {
-    return await this.ngFireAuth.sendPasswordResetEmail(email);
+  async resetarSenha(email: string): Promise<void> {
+    return await sendPasswordResetEmail(auth, email);
   }
 
-  async deslogarUsuario() {
-    return await this.ngFireAuth.signOut();
+  async deslogarUsuario(): Promise<void> {
+    return await signOut(auth);
   }
 
-  async obterPerfil() {
-    return await this.ngFireAuth.currentUser;
+  async obterPerfil(): Promise<User | null> {
+    return auth.currentUser; // Retorna o usuário atual
   }
 }

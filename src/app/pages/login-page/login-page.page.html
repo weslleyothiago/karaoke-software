@@ -1,10 +1,15 @@
 <ion-content>
-  <!-- Segunda metade com o conteúdo centralizado e com fundo e sombra -->
   <div class="h-screen flex items-center justify-center">
     <div
       class="w-2/3 p-8 shadow-lg shadow-black rounded-3xl flex flex-col text-center items-center justify-center"
     >
-    <ion-text *ngIf="mensagemErro" class="text-center bg-red-700" >{{ mensagemErro }}</ion-text>
+
+      <!-- Mensagem de erro estilizada -->
+<ion-text *ngIf="mensagemErro" class="w-full text-center bg-red-700 text-white p-2 rounded-md mb-5 flex items-center justify-center">
+  <ion-icon name="alert-circle-outline" class="mr-2 size-7"></ion-icon> <!-- Margem à direita para espaçamento -->
+  {{ mensagemErro }}
+</ion-text>
+
 
       <strong><span>Milhões de músicas à sua espera</span></strong>
       <strong><span>Só no Daisuke!</span></strong>
@@ -12,7 +17,7 @@
         <ion-input
           type="email"
           formControlName="email"
-          errorText="Insira seu endereço de e-mail do Daisuke."
+          [errorText]="controlErros['email'].errors?.['required'] ? 'Insira seu endereço de e-mail do Daisuke.' : ''"
           label="E-mail"
           label-placement="floating"
           fill="solid"
@@ -21,7 +26,7 @@
         ></ion-input>
         <ion-input
           formControlName="senha"
-          errorText="Por favor, insira sua senha."
+          [errorText]="controlErros['senha'].errors?.['required'] ? 'Por favor, insira sua senha.' : ''"
           type="password"
           label="Senha"
           label-placement="floating"
@@ -37,6 +42,16 @@
           >
         </div>
         <ion-button shape="round" class="mt-6 w-5/6 h-12" (click)="logarSe()">Entrar</ion-button>
+        <ion-button
+        shape="round"
+        class="mt-6 w-5/6 h-12"
+        fill="outline"
+        (click)="logarComGoogle()"
+        color="light"
+        >
+        <ion-icon slot="start" name="logo-google"></ion-icon>
+        Logar com o Google</ion-button
+          >
         <div class="w-5/6 flex mt-2 justify-center">
           <span class="py-3"
             >Não tem uma conta?

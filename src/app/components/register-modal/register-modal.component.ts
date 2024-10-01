@@ -12,6 +12,7 @@ import {
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LoadingController, ModalController } from '@ionic/angular';
+import { AuthService } from 'src/services/auth.service';
 import { AuthenticationEmailService } from 'src/services/authentication-email.service';
 
 @Component({
@@ -47,6 +48,7 @@ export class RegisterModalComponent implements OnInit {
   anos: number[] = [];
 
   constructor(
+    private authServiceGoogle: AuthService,
     public router: Router,
     private changeDetectorRef: ChangeDetectorRef,
     public authService: AuthenticationEmailService,
@@ -127,8 +129,15 @@ export class RegisterModalComponent implements OnInit {
     }
   }
 
-
-  
+    // Método para registrar com Google
+    async registrarComGoogle() {
+      try {
+        await this.authServiceGoogle.cadastrarUsuarioComGoogle();
+        // Aqui você pode redirecionar o usuário ou mostrar uma mensagem de sucesso
+      } catch (error) {
+        console.log('Erro ao registrar com Google: ' + error);
+      }
+    }
   
 
   fecharModal() {

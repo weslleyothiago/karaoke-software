@@ -3,7 +3,7 @@
     >Daisuke Karaokê</ion-title
   >
   <button
-    (click)="fechaModal()"
+    (click)="fecharModal()"
     aria-label="Fechar modal"
     class="group absolute top-4 right-4 flex items-center justify-center w-8 h-8 bg-transparent rounded-full transition duration-300 ease-in-out"
   >
@@ -26,27 +26,53 @@
 </ion-header>
 
 <ion-content>
-  <div class="container items-center flex flex-col">
-    <ion-title class="mt-0 text-base">Redefina sua senha</ion-title>
-    <div class="flex flex-col items-center w-5/6 mt-6">
-      <div class="flex flex-col w-5/6 justify-start">
+
+  <ng-container [ngTemplateOutlet]="getTemplate()"></ng-container>
+
+  <ng-template #telaEsqueciSenha>
+    <div class="container items-center flex flex-col">
+      <ion-title class="mt-0 text-base">Redefina sua senha</ion-title>
+      <div class="flex flex-col items-center w-5/6 mt-6">
+        <div class="flex flex-col w-5/6 justify-start">
         <span class="font-semibold"
           >Insira o endereço de e-mail vinculado à sua conta do Daisuke Karaokê
           pra te enviarmos um e-mail de recuperação.</span
-        >
-      </div>
-      <form class="w-full flex flex-col items-center" [formGroup]="formularioEsqueciSenha" (ngSubmit)="resetarSenha()">
-        <ion-input
+          >
+        </div>
+        <form class="w-full flex flex-col items-center" [formGroup]="formularioEsqueciSenha" (ngSubmit)="resetarSenha()">
+          <ion-input
           formControlName="email"
           label="E-mail"
           label-placement="floating"
           fill="solid"
           class="w-5/6 mt-4"
-        ></ion-input>
-        <ion-button [disabled]="formularioEsqueciSenha.invalid" shape="round" class="mt-6 w-5/6 h-12" type="submit"
+          ></ion-input>
+          <ion-button [disabled]="formularioEsqueciSenha.invalid" (click)="ativarTemplate('telaSucessoEsqueciSenha')" shape="round" class="mt-6 w-5/6 h-12" type="submit"
           >enviar link</ion-button
-        >
-      </form>
+          >
+        </form>
+      </div>
     </div>
-  </div>
+  </ng-template>
+
+  <ng-template #telaSucessoEsqueciSenha>
+    <div class="container items-center flex flex-col">
+      <ion-title class="mt-0 text-base">Verifique sua caixa de entrada</ion-title>
+      <div class="flex flex-col items-center w-5/6 mt-6">
+        <div class="flex flex-col w-5/6 justify-start">
+        <span class="font-semibold"
+          >Enviamos um e‑mail para você. Siga as instruções para acessar sua conta do Daisuke.
+          </span
+          >
+        </div>
+          <ion-button (click)="fecharModal()" shape="round" class="mt-6 w-5/6 h-12"
+          >Voltar para login</ion-button
+          >
+          <ion-button (click)="ativarTemplate('telaEsqueciSenha')" shape="round" class="w-5/6 h-12 mt-2" fill="outline" color="light"
+          >Editar E-mail</ion-button
+          >
+        
+      </div>
+    </div>
+  </ng-template>
 </ion-content>
