@@ -1,0 +1,125 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Artista {
+  id   Int     @id @default(autoincrement())
+  nome String
+  slug String? @unique
+
+  MusicaArtista MusicaArtista[]
+}
+
+model Genero {
+  id            Int     @id @default(autoincrement())
+  generoMusical String
+  slug          String? @unique
+
+  Musicas Musica[]
+}
+
+model Musica {
+  id                Int     @id @default(autoincrement())
+  titulo            String
+  letra             String?
+  duracao           String?
+  link              String?
+  slug              String? @unique
+  generoMusical     Genero? @relation(fields: [fkGeneroMusicalId], references: [id])
+  fkGeneroMusicalId Int?
+
+  MusicaArtista  MusicaArtista[]
+  PlaylistMusica PlaylistMusica[]
+  Historico      Historico[]
+}
+
+model Usuario {
+  id    Int         @id @default(autoincrement())
+  tipo  UsuarioTipo
+  email String      @unique
+  senha String
+  slug  String?     @unique
+
+  Perfis  Perfil[]
+  Sessoes Sessao[]
+}
+
+enum UsuarioTipo {
+  Administrador
+  Cliente
+}
+
+model Perfil {
+  id             Int       @id @default(autoincrement())
+  nome           String
+  fotoPerfil     String?
+  dataNascimento DateTime?
+  slug           String?   @unique
+  usuario        Usuario?  @relation(fields: [fkUsuarioId], references: [id])
+  fkUsuarioId    Int?
+
+  PerfisPlaylists PerfisPlaylists[]
+}
+
+model Playlist {
+  id   Int     @id @default(autoincrement())
+  nome String
+  slug String? @unique
+
+  PerfisPlaylists PerfisPlaylists[]
+  PlaylistMusica  PlaylistMusica[]
+}
+
+model PerfisPlaylists {
+  perfilId   Int
+  playlistId Int
+  perfil     Perfil   @relation(fields: [perfilId], references: [id])
+  playlist   Playlist @relation(fields: [playlistId], references: [id])
+
+  @@id([perfilId, playlistId])
+}
+
+model Historico {
+  id         Int      @id @default(autoincrement())
+  musica     Musica   @relation(fields: [fkMusicaId], references: [id])
+  fkMusicaId Int
+  dataHora   DateTime
+}
+
+model Sessao {
+  id           Int          @id @default(autoincrement())
+  usuario      Usuario      @relation(fields: [fkUsuarioId], references: [id])
+  fkUsuarioId  Int
+  dataInicio   DateTime
+  dataFinal    DateTime?
+  codigoSessao String
+  status       SessaoStatus
+}
+
+enum SessaoStatus {
+  Iniciada
+  Finalizada
+}
+
+model MusicaArtista {
+  musicaId  Int
+  artistaId Int
+  musica    Musica  @relation(fields: [musicaId], references: [id])
+  artista   Artista @relation(fields: [artistaId], references: [id])
+
+  @@id([musicaId, artistaId])
+}
+
+model PlaylistMusica {
+  playlistId Int
+  musicaId   Int
+  playlist   Playlist @relation(fields: [playlistId], references: [id])
+  musica     Musica   @relation(fields: [musicaId], references: [id])
+
+  @@id([playlistId, musicaId])
+}
