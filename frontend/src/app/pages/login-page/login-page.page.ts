@@ -4,8 +4,8 @@ import { Router } from '@angular/router';
 import { LoadingController, ModalController } from '@ionic/angular';
 import { EsqueciSenhaComponent } from 'src/app/components/esqueci-senha/esqueci-senha.component';
 import { RegisterModalComponent } from 'src/app/components/register-modal/register-modal.component';
-import { AuthService } from 'src/services/auth.service';
-import { AuthenticationEmailService } from '../../../services/authentication-email.service';
+import { AuthService } from 'src/app/services/auth.service';
+import { AuthenticationEmailService } from 'src/app/services/authentication-email.service';
 
 @Component({
   selector: 'app-login-page',

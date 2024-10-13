@@ -12,8 +12,8 @@ import {
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LoadingController, ModalController } from '@ionic/angular';
-import { AuthService } from 'src/services/auth.service';
-import { AuthenticationEmailService } from 'src/services/authentication-email.service';
+import { AuthService } from 'src/app/services/auth.service';
+import { AuthenticationEmailService } from 'src/app/services/authentication-email.service';
 
 @Component({
   selector: 'app-register-modal',

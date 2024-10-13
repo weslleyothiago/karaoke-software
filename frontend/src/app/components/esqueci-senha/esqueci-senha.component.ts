@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, OnInit, TemplateRef, ViewChild, } from '@
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
-import { AuthenticationEmailService } from 'src/services/authentication-email.service';
+import { AuthenticationEmailService } from 'src/app/services/authentication-email.service';
 
 @Component({
   selector: 'app-esqueci-senha',

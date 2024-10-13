@@ -8,7 +8,7 @@ import {
   fetchSignInMethodsForEmail,
   createUserWithEmailAndPassword,
 } from 'firebase/auth';
-import { auth } from 'src/services/firebase'; // Ajuste o caminho conforme necessário
+import { auth } from './firebase'; // Ajuste o caminho conforme necessário
 
 @Injectable({
   providedIn: 'root',
