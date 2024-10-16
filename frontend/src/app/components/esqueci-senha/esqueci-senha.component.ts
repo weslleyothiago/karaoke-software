@@ -27,6 +27,7 @@ export class EsqueciSenhaComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.changeDetectorRef.detectChanges();
     this.formularioEsqueciSenha = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.(com|net|org|edu|gov|mil)$')]],
     });
@@ -46,9 +47,8 @@ export class EsqueciSenhaComponent implements OnInit {
       this.mensagemSucesso = 'Link de redefinição de senha enviado com sucesso.';
       console.log('Link de reset de senha enviado.');
 
-      // Redireciona para a página de login
-      this.router.navigate(['/login']);
-      this.modalController.dismiss();  // Fecha o modal
+      this.ativarTemplate('telaSucessoEsqueciSenha');
+
     } catch (error) {
       console.error('Erro ao enviar o link de redefinição de senha: ', error);
       this.mensagemErro = 'Ocorreu um erro ao enviar o link de redefinição de senha. Tente novamente.';
