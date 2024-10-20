@@ -6,9 +6,10 @@ import { UsuarioModule } from './usuario/usuario.module';
 import { AuthModule } from './auth/auth.module';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
+import { MusicModule } from './music/music.module';
 
 @Module({
-  imports: [PrismaModule, UsuarioModule, AuthModule],
+  imports: [PrismaModule, UsuarioModule, AuthModule, MusicModule,],
   controllers: [AppController ],
   providers: [
     AppService,

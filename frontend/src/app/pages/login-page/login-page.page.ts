@@ -113,5 +113,10 @@ export class LoginPagePage implements OnInit {
       this.mensagemErro = 'Erro ao tentar logar com o';
     }
   }
+
+  loginWithGoogle() {
+    window.location.href = 'http://localhost:3333/auth/google';
+  }
+  
 }
 
