@@ -9,29 +9,34 @@ datasource db {
 
 model Artista {
   id   Int     @id @default(autoincrement())
-  nome String
-  slug String? @unique
+  nome String  @db.VarChar(255)
+  slug String  @unique @db.VarChar(255)
+  createdAt DateTime @default(now())
+  updatedAt DateTime? @updatedAt
 
   MusicaArtista MusicaArtista[]
 }
 
 model Genero {
   id            Int     @id @default(autoincrement())
-  generoMusical String
-  slug          String? @unique
+  generoMusical String  @db.VarChar(255)
+  slug          String  @unique @db.VarChar(255)
+  createdAt DateTime @default(now())
+  updatedAt DateTime? @updatedAt
 
   Musicas Musica[]
 }
 
 model Musica {
   id                Int     @id @default(autoincrement())
-  titulo            String
-  letra             String?
-  duracao           String?
-  link              String?
-  slug              String? @unique
-  generoMusical     Genero? @relation(fields: [fkGeneroMusicalId], references: [id])
-  fkGeneroMusicalId Int?
+  titulo            String  @db.VarChar(255)
+  duracao           String  @db.VarChar(20)
+  link              String  @db.VarChar(255)
+  slug              String  @unique @db.VarChar(255)
+  generoMusical     Genero  @relation(fields: [fkGeneroMusicalId], references: [id])
+  fkGeneroMusicalId Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime? @updatedAt
 
   MusicaArtista  MusicaArtista[]
   PlaylistMusica PlaylistMusica[]
@@ -40,10 +45,11 @@ model Musica {
 
 model Usuario {
   id    Int         @id @default(autoincrement())
-  tipo  UsuarioTipo
-  email String      @unique
-  senha String
-  slug  String?     @unique
+  tipo  UsuarioTipo @default(Cliente)
+  email String      @unique @db.VarChar(255)
+  senha String      @db.VarChar(255)
+  createdAt DateTime @default(now())
+  updatedAt DateTime? @updatedAt
 
   Perfis  Perfil[]
   Sessoes Sessao[]
@@ -56,20 +62,24 @@ enum UsuarioTipo {
 
 model Perfil {
   id             Int       @id @default(autoincrement())
-  nome           String
-  fotoPerfil     String?
-  dataNascimento DateTime?
-  slug           String?   @unique
+  nome           String    @db.VarChar(255)
+  fotoPerfil     String?   @db.VarChar(255)
+  dataNascimento DateTime
+  slug           String    @unique @db.VarChar(255)
   usuario        Usuario?  @relation(fields: [fkUsuarioId], references: [id])
   fkUsuarioId    Int?
+  createdAt DateTime @default(now())
+  updatedAt DateTime? @updatedAt
 
   PerfisPlaylists PerfisPlaylists[]
 }
 
 model Playlist {
   id   Int     @id @default(autoincrement())
-  nome String
-  slug String? @unique
+  nome String  @db.VarChar(255)
+  slug String  @unique @db.VarChar(255)
+  createdAt DateTime @default(now())
+  updatedAt DateTime? @updatedAt
 
   PerfisPlaylists PerfisPlaylists[]
   PlaylistMusica  PlaylistMusica[]
@@ -80,6 +90,8 @@ model PerfisPlaylists {
   playlistId Int
   perfil     Perfil   @relation(fields: [perfilId], references: [id])
   playlist   Playlist @relation(fields: [playlistId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime? @updatedAt
 
   @@id([perfilId, playlistId])
 }
@@ -97,8 +109,10 @@ model Sessao {
   fkUsuarioId  Int
   dataInicio   DateTime
   dataFinal    DateTime?
-  codigoSessao String
+  codigoSessao String       @db.VarChar(255)
   status       SessaoStatus
+  createdAt DateTime @default(now())
+  updatedAt DateTime? @updatedAt
 }
 
 enum SessaoStatus {
@@ -111,6 +125,8 @@ model MusicaArtista {
   artistaId Int
   musica    Musica  @relation(fields: [musicaId], references: [id])
   artista   Artista @relation(fields: [artistaId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime? @updatedAt
 
   @@id([musicaId, artistaId])
 }
@@ -120,6 +136,8 @@ model PlaylistMusica {
   musicaId   Int
   playlist   Playlist @relation(fields: [playlistId], references: [id])
   musica     Musica   @relation(fields: [musicaId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime? @updatedAt
 
   @@id([playlistId, musicaId])
 }

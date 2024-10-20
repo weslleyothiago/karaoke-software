@@ -19,6 +19,10 @@ const routes: Routes = [
         (m) => m.LoginPagePageModule,
       ),
   },
+  {
+    path: 'painel-admin',
+    loadChildren: () => import('./pages/painel-admin/painel-admin.module').then( m => m.PainelAdminPageModule)
+  },
 ];
 
 @NgModule({
