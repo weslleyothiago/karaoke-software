@@ -9,14 +9,13 @@ export class YoutubeService {
 
   constructor(private http: HttpClient) {}
 
-  extractVideoId(url: string): string | null {
-    const videoIdMatch = url.match(/(?:https?:\/\/)?(?:www\.)?youtube\.com\/watch\?v=([^&]+)/);
-    return videoIdMatch ? videoIdMatch[1] : null;
-  }
-
   getVideoDuration(videoId: string) {
     const url = `https://www.googleapis.com/youtube/v3/videos?id=${videoId}&part=contentDetails&key=${this.apiKey}`;
     return this.http.get(url);
   }
-  
+
+  extractVideoId(url: string): string | null {
+    const videoIdMatch = url.match(/(?:https?:\/\/)?(?:www\.)?youtube\.com\/watch\?v=([^&]+)/);
+    return videoIdMatch ? videoIdMatch[1] : null;
+  }
 }
