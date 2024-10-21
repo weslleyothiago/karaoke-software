@@ -1,13 +1,60 @@
-<form (ngSubmit)="onSubmit()">
-  <ion-input [(ngModel)]="music.title" name="title" placeholder="Title" required></ion-input>
-  <ion-input [(ngModel)]="music.link" name="link" placeholder="Link" required></ion-input>
-  <ion-input [(ngModel)]="music.artist" name="artist" placeholder="Artist" required></ion-input>
-  <ion-input [(ngModel)]="music.duration" name="duration" placeholder="Duration" required></ion-input>
-  <ion-input [(ngModel)]="music.slug" name="slug" placeholder="Slug" required></ion-input>
-  <ion-select [(ngModel)]="music.genreId" name="genre" required>
-    <ion-select-option *ngFor="let g of generosMusicais" [value]="g.value">
-      {{ g.genero }}
-    </ion-select-option>
-  </ion-select>
-  <ion-button type="submit">Register Music</ion-button>
-</form>
+<ion-content>
+  <div class="h-screen flex items-center justify-center">
+    <div
+      class="w-2/3 p-8 shadow-lg shadow-black rounded-3xl flex flex-col text-center items-center justify-center"
+    >
+
+      <strong><span>FORMULÁRIO DE CADASTRO DE MÚSICA</span></strong>
+      <form (ngSubmit)="onSubmit()" [formGroup]="musicForm" class="w-full flex flex-col items-center">
+
+        <ion-input
+          name="title"
+          formControlName="title"
+          [(ngModel)]="music.title"
+          type="text"
+          label="Tíulo"
+          label-placement="floating"
+          fill="solid"
+          placeholder=""
+          class="w-5/6 mt-4"
+        ></ion-input>
+
+        
+        <ion-input
+        name="link"
+        formControlName="link"
+        [(ngModel)]="music.link"
+        type="text"
+        label="Link"
+        label-placement="floating"
+        fill="solid"
+        placeholder=""
+        class="w-5/6 mt-4"
+        ></ion-input>
+
+
+        <ion-input
+        name="artist"
+        formControlName="artist"
+        [(ngModel)]="music.artist"
+        type="text"
+        label="Artista"
+        label-placement="floating"
+        fill="solid"
+        placeholder=""
+        class="w-5/6 mt-4"
+        ></ion-input>
+        
+        
+        <ion-select formControlName="genre" name="genre" class="w-5/6 mt-4" label-placement="solid" fill="solid">
+          <div class="w-full" slot="label">Gênero <ion-text color="danger">(Obrigatório)</ion-text></div>
+          <ion-select-option *ngFor="let g of generosMusicais" [value]="g.value"> 
+            {{ g.genero }}
+          </ion-select-option>
+        </ion-select>
+
+        <ion-button shape="round" class="mt-6 w-5/6 h-12" [disabled]="musicForm.invalid" type="submit">Mostrar prévia</ion-button>
+      </form>
+    </div>
+  </div>
+</ion-content>

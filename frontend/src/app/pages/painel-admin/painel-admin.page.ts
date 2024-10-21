@@ -1,4 +1,3 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MusicService } from './music.service';
@@ -20,27 +19,6 @@ export class PainelAdminPage implements OnInit {
     genreId: 0,
   };
 
-  constructor(
-    private musicService: MusicService,
-    private formBuilder: FormBuilder,
-  ) {}
-
-  ngOnInit() {
-    this.musicForm = this.formBuilder.group({
-      titulo: ['', Validators.required],
-      link: ['', Validators.required],
-      genero: ['', Validators.required],
-      duracao: [{ value: '', disabled: true }],
-      slug: [{ value: '', disabled: true}],
-    });
-  }
-
-  onSubmit() {
-    this.musicService.create(this.music).subscribe(response => {
-      console.log('Music registered!', response);
-    });
-  }
-
   generosMusicais = [
     { genero: 'K-pop', value: 1 },
     { genero: 'Pop', value: 2 },
@@ -57,6 +35,53 @@ export class PainelAdminPage implements OnInit {
     { genero: 'Metal', value: 13 },
     { genero: 'Indie', value: 14 },
     { genero: 'Alternativo', value: 15 },
-  ]
+  ];
 
+  constructor(
+    private musicService: MusicService,
+    private formBuilder: FormBuilder,
+  ) {}
+
+  ngOnInit() {
+    this.musicForm = this.formBuilder.group({
+      title: ['', Validators.required],
+      artist: ['', Validators.required],
+      link: ['', [Validators.required, Validators.pattern('https?://.+')]],
+      genre: ['', Validators.required],
+    });
+
+    this.musicForm.get('title')?.valueChanges.subscribe(() => this.updateSlug());
+    this.musicForm.get('artist')?.valueChanges.subscribe(() => this.updateSlug());
+  }
+
+  updateSlug() {
+    const title = this.musicForm.get('title')?.value || '';
+    this.music.slug = this.generateSlug(title);
+
+  }
+
+  onSubmit() {
+    // Atualiza o objeto `music` com os valores do formulário antes de enviar
+    this.music.title = this.musicForm.get('title')?.value;
+    this.music.artist = this.musicForm.get('artist')?.value;
+    this.music.link = this.musicForm.get('link')?.value;
+    this.music.genreId = this.musicForm.get('genre')?.value;
+    
+    // Envia os dados para o serviço de criação de música
+    this.musicService.create(this.music).subscribe(response => {
+      console.log('Music registered!', response);
+    });
+  }
+
+  generateSlug(text: string): string {
+    return text
+      .toString()
+      .normalize("NFD") // Normaliza caracteres acentuados
+      .replace(/[\u0300-\u036f]/g, "") // Remove acentos
+      .toLowerCase()
+      .trim()
+      .replace(/\s+/g, '-') // Substitui espaços por hifens
+      .replace(/[^\w\-]+/g, '') // Remove caracteres especiais
+      .replace(/\-\-+/g, '-'); // Substitui múltiplos hifens por um único
+  }
 }
