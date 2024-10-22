@@ -1,70 +1,93 @@
 <ion-content>
-  <div class="h-screen flex items-center justify-center">
-    <div class="w-2/3 p-8 shadow-lg shadow-black rounded-3xl flex flex-row text-left justify-between">
-      
-      <!-- Formulário -->
-      <div class="w-3/5 flex flex-col items-center justify-center text-center"> 
+  <div class="h-screen flex flex-col items-center justify-center">
+    
+    <!-- Container que envolve o título, formulário e card -->
+    <div class="w-2/3 p-8 shadow-lg shadow-black rounded-3xl flex flex-col items-center text-center">
 
-        <strong><span class="block w-full text-center">FORMULÁRIO DE CADASTRO DE MÚSICA</span></strong>
+      <!-- Título centralizado dentro da div -->
+      <h1 class="text-xl font-medium">FORMULÁRIO DE CADASTRO DE MÚSICA</h1>
 
-        <form (ngSubmit)="onSubmit()" [formGroup]="musicForm" class="w-full flex flex-col items-start">
+      <!-- Container para formulário e card de prévia -->
+      <div class="w-full flex flex-row justify-between items-start">
+        
+        <!-- Formulário -->
+        <div class="w-3/5 flex flex-col items-center text-center"> 
+          <form (ngSubmit)="onSubmit()" [formGroup]="musicForm" class="w-full flex flex-col items-start">
+            
+            <ion-input
+              name="title"
+              formControlName="title"
+              [(ngModel)]="music.title"
+              type="text"
+              label="Título"
+              label-placement="floating"
+              fill="solid"
+              placeholder=""
+              class="w-full mt-4"
+            ></ion-input>
+
+            <ion-input
+              name="link"
+              formControlName="link"
+              [(ngModel)]="music.link"
+              type="text"
+              label="Link"
+              label-placement="floating"
+              fill="solid"
+              placeholder=""
+              class="w-full mt-4"
+            ></ion-input>
+
+            <ion-input
+              name="artist"
+              formControlName="artist"
+              [(ngModel)]="music.artist"
+              type="text"
+              label="Artista"
+              label-placement="floating"
+              fill="solid"
+              placeholder=""
+              class="w-full mt-4"
+            ></ion-input>
+
+            <ion-select formControlName="genre" name="genre" class="w-full mt-4" label-placement="solid" fill="solid">
+              <div class="w-full" slot="label">Gênero <ion-text color="danger">(Obrigatório)</ion-text></div>
+              <ion-select-option *ngFor="let g of generosMusicais" [value]="g.value"> 
+                {{ g.genero }}
+              </ion-select-option>
+            </ion-select>
+
+            <!-- Botão "Mostrar prévia" abaixo dos inputs -->
+            <ion-button shape="round" class="mt-6 w-full h-12" [disabled]="musicForm.invalid" type="submit">Mostrar prévia</ion-button>
+          </form>
+        </div>
+
+        <!-- Card de prévia -->
+        <div class="w-2/5 ml-6 flex flex-col items-center text-center">
+          <ion-card class="w-full">
+            <div *ngIf="!musicPreview; else previewContent">
+              <!-- Skeleton de carregamento -->
+              <ion-skeleton-text animated class="w-full h-48"></ion-skeleton-text>
+              <ion-card-header>
+                <ion-skeleton-text animated class="w-3/4 h-6"></ion-skeleton-text>
+                <ion-skeleton-text animated class="w-1/2 h-4 mt-2"></ion-skeleton-text>
+              </ion-card-header>
+            </div>
+            
+            <!-- Conteúdo da prévia quando disponível -->
+            <ng-template #previewContent>
+              <img [src]="musicPreview?.thumbnail" alt="Thumbnail" class="w-full h-48 object-cover" />
+              <ion-card-header>
+                <ion-card-title>{{ musicPreview?.title }}</ion-card-title>
+                <ion-card-subtitle class="text-left">{{ musicPreview?.artist }}</ion-card-subtitle>
+              </ion-card-header>
+            </ng-template>
+          </ion-card>
           
-          <ion-input
-            name="title"
-            formControlName="title"
-            [(ngModel)]="music.title"
-            type="text"
-            label="Título"
-            label-placement="floating"
-            fill="solid"
-            placeholder=""
-            class="w-full mt-4"
-          ></ion-input>
+          <!-- Botão "Salvar" abaixo do card -->
+          <ion-button *ngIf="musicPreview" class="mt-4 w-full h-12" shape="round" (click)="registerMusic()">Registrar</ion-button>
+        </div>
 
-          <ion-input
-            name="link"
-            formControlName="link"
-            [(ngModel)]="music.link"
-            type="text"
-            label="Link"
-            label-placement="floating"
-            fill="solid"
-            placeholder=""
-            class="w-full mt-4"
-          ></ion-input>
-
-          <ion-input
-            name="artist"
-            formControlName="artist"
-            [(ngModel)]="music.artist"
-            type="text"
-            label="Artista"
-            label-placement="floating"
-            fill="solid"
-            placeholder=""
-            class="w-full mt-4"
-          ></ion-input>
-
-          <ion-select formControlName="genre" name="genre" class="w-full mt-4" label-placement="solid" fill="solid">
-            <div class="w-full" slot="label">Gênero <ion-text color="danger">(Obrigatório)</ion-text></div>
-            <ion-select-option *ngFor="let g of generosMusicais" [value]="g.value"> 
-              {{ g.genero }}
-            </ion-select-option>
-          </ion-select>
-
-          <ion-button shape="round" class="mt-6 w-full h-12" [disabled]="musicForm.invalid" type="submit">Mostrar prévia</ion-button>
-        </form>
-      </div>
-
-      <!-- Card de prévia -->
-      <div class="w-2/5 ml-6 text-center" *ngIf="musicPreview">
-        <ion-card>
-          <img [src]="musicPreview.thumbnail" alt="Thumbnail" />
-          <ion-card-header>
-            <ion-card-title>{{ musicPreview.title }}</ion-card-title>
-            <ion-card-subtitle>{{ musicPreview.artist }}</ion-card-subtitle>
-          </ion-card-header>
-        </ion-card>
       </div>
     </div>
   </div>

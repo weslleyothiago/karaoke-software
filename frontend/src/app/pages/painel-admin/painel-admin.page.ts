@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MusicService } from './music.service';
 import { YoutubeService } from 'src/app/services/youtube.service';
 import { Music } from './music.model';
+import { LoadingController } from '@ionic/angular';
 
 @Component({
   selector: 'app-painel-admin',
@@ -42,6 +43,7 @@ export class PainelAdminPage implements OnInit {
   ];
 
   constructor(
+    public loadingCtrl: LoadingController,
     private youtubeService: YoutubeService,
     private musicService: MusicService,
     private formBuilder: FormBuilder,
@@ -70,7 +72,7 @@ export class PainelAdminPage implements OnInit {
     const hours = parts[0] ? parts[0].padStart(2, '0') : '00';
     const minutes = parts[1] ? parts[1].padStart(2, '0') : '00';
     const seconds = parts[2] ? parts[2].padStart(2, '0') : '00';
-    return `${hours}:${minutes}:${seconds}`;
+    return "${hours}:${minutes}:${seconds}";
   }
 
   onSubmit() {
@@ -101,15 +103,42 @@ export class PainelAdminPage implements OnInit {
         this.music.genreId = this.musicForm.get('genre')?.value;
         this.music.duration = this.videoDuration || '';
 
-        // Envia para o backend
-        this.musicService.create(this.music).subscribe(response => {
-          console.log('Music registered!', response);
-        });
       });
     } else {
       console.error('Video ID not found');
     }
   }
+
+  async registerMusic() {
+    const loading = await this.loadingCtrl.create({
+      message: 'Registrando...',
+      spinner: 'crescent',
+    });
+    await loading.present();
+  
+    try {
+      // Envia para o backend e aguarda a resposta
+      this.musicService.create(this.music).subscribe({
+        next: (response) => {
+          console.log('Music registered!', response);
+  
+          // Somente reseta se a resposta for um sucesso
+          this.musicPreview = null;
+          this.musicForm.reset();
+        },
+        error: (error) => {
+          console.error('Erro ao registrar música: ', error);
+        },
+        complete: async () => {
+          await loading.dismiss();
+        }
+      });
+    } catch (error) {
+      console.error('Erro ao registrar música: ', error);
+      await loading.dismiss();
+    }
+  }
+  
 
   generateSlug(text: string): string {
     return text
