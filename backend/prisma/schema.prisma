@@ -31,7 +31,7 @@ model Musica {
  id                Int     @id @default(autoincrement())
  titulo            String  @db.VarChar(255)
  duracao           String  @db.VarChar(20)
- link              String  @db.VarChar(255)
+ link              String  @unique @db.VarChar(255)
  slug              String  @unique @db.VarChar(255)
  generoMusical     Genero  @relation(fields: [fkGeneroMusicalId], references: [id])
  fkGeneroMusicalId Int
