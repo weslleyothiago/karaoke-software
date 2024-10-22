@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MusicService } from './music.service';
-import { Music } from './music.model';
 import { YoutubeService } from 'src/app/services/youtube.service';
+import { Music } from './music.model';
 
 @Component({
   selector: 'app-painel-admin',
@@ -10,9 +10,10 @@ import { YoutubeService } from 'src/app/services/youtube.service';
   styleUrls: ['./painel-admin.page.scss'],
 })
 export class PainelAdminPage implements OnInit {
-  videoDuration: string | null = null;
   musicForm!: FormGroup;
-  
+  videoDuration: string | null = null;
+  musicPreview: { title: string; artist: string; thumbnail: string } | null = null;
+
   music: Music = {
     title: '',
     link: '',
@@ -47,33 +48,24 @@ export class PainelAdminPage implements OnInit {
   ) {}
 
   ngOnInit() {
-    // Inicializa o formulário
     this.musicForm = this.formBuilder.group({
       title: ['', Validators.required],
       artist: ['', Validators.required],
-      link: ['', [Validators.required, Validators.pattern('https?://.+')]],
+      link: ['', [Validators.required, Validators.pattern('https?://(www\.youtube\.com|youtu\.be)/.+')]],
       genre: ['', Validators.required],
     });
 
-    // Atualiza o slug quando o título ou o artista mudarem
     this.musicForm.get('title')?.valueChanges.subscribe(() => this.updateSlug());
     this.musicForm.get('artist')?.valueChanges.subscribe(() => this.updateSlug());
+  }
 
-    // Quando o campo de link mudar, extraímos o ID do vídeo e obtemos a duração
-    this.musicForm.get('link')?.valueChanges.subscribe((link: string) => {
-      const videoId = this.youtubeService.extractVideoId(link);
-      if (videoId) {
-        this.youtubeService.getVideoDuration(videoId).subscribe((response: any) => {
-          const duration = response.items[0].contentDetails.duration;
-          this.videoDuration = this.formatDuration(duration);
-        });
-      } else {
-        console.error('Video ID not found');
-      }
-    });
+  updateSlug() {
+    const title = this.musicForm.get('title')?.value || '';
+    this.music.slug = this.generateSlug(title);
   }
 
   formatDuration(duration: string): string {
+    // Função para converter a duração ISO 8601 para um formato legível (HH:MM:SS)
     const parts = duration.replace('PT', '').split(/H|M|S/);
     const hours = parts[0] ? parts[0].padStart(2, '0') : '00';
     const minutes = parts[1] ? parts[1].padStart(2, '0') : '00';
@@ -81,26 +73,47 @@ export class PainelAdminPage implements OnInit {
     return `${hours}:${minutes}:${seconds}`;
   }
 
-  updateSlug() {
-    const title = this.musicForm.get('title')?.value || '';
-    const artist = this.musicForm.get('artist')?.value || '';
-    this.music.slug = this.generateSlug(`${title}`);
-  }
-
   onSubmit() {
-    this.music.title = this.musicForm.get('title')?.value;
-    this.music.artist = this.musicForm.get('artist')?.value;
-    this.music.link = this.musicForm.get('link')?.value;
-    this.music.genreId = this.musicForm.get('genre')?.value;
-    this.music.duration = this.videoDuration || '';
+    const videoUrl = this.musicForm.get('link')?.value;
+    const videoId = this.youtubeService.extractVideoId(videoUrl);
 
-    this.musicService.create(this.music).subscribe(response => {
-      console.log('Music registered!', response);
-    });
+    if (videoId) {
+      const thumbnail = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+
+      // Obtenha a duração do vídeo
+      this.youtubeService.getVideoDuration(videoId).subscribe((response: any) => {
+        const duration = response.items[0]?.contentDetails?.duration || ''; // Obtenha a duração
+
+        // Converte a duração para um formato legível
+        this.videoDuration = this.formatDuration(duration);
+
+        // Prepara a prévia da música
+        this.musicPreview = {
+          title: this.musicForm.get('title')?.value,
+          artist: this.musicForm.get('artist')?.value,
+          thumbnail: thumbnail,
+        };
+
+        // Atualiza os dados da música
+        this.music.title = this.musicForm.get('title')?.value;
+        this.music.artist = this.musicForm.get('artist')?.value;
+        this.music.link = this.musicForm.get('link')?.value;
+        this.music.genreId = this.musicForm.get('genre')?.value;
+        this.music.duration = this.videoDuration || '';
+
+        // Envia para o backend
+        this.musicService.create(this.music).subscribe(response => {
+          console.log('Music registered!', response);
+        });
+      });
+    } else {
+      console.error('Video ID not found');
+    }
   }
 
   generateSlug(text: string): string {
     return text
+      .toString()
       .normalize("NFD")
       .replace(/[\u0300-\u036f]/g, "")
       .toLowerCase()
