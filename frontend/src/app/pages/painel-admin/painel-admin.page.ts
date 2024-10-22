@@ -72,7 +72,7 @@ export class PainelAdminPage implements OnInit {
     const hours = parts[0] ? parts[0].padStart(2, '0') : '00';
     const minutes = parts[1] ? parts[1].padStart(2, '0') : '00';
     const seconds = parts[2] ? parts[2].padStart(2, '0') : '00';
-    return "${hours}:${minutes}:${seconds}";
+    return `{hours}:${minutes}:${seconds}`;
   }
 
   onSubmit() {
