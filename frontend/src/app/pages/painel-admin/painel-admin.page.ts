@@ -67,13 +67,23 @@ export class PainelAdminPage implements OnInit {
   }
 
   formatDuration(duration: string): string {
-    // Função para converter a duração ISO 8601 para um formato legível (HH:MM:SS)
+    // Remove o prefixo 'PT' e divide a string com base nas partes de horas, minutos e segundos
     const parts = duration.replace('PT', '').split(/H|M|S/);
+
+    // Obtemos horas, minutos e segundos
     const hours = parts[0] ? parts[0].padStart(2, '0') : '00';
     const minutes = parts[1] ? parts[1].padStart(2, '0') : '00';
     const seconds = parts[2] ? parts[2].padStart(2, '0') : '00';
-    return `{hours}:${minutes}:${seconds}`;
-  }
+
+    // Se não houver horas, formate como MM:SS
+    if (hours === '00') {
+        return `${minutes}:${seconds}`; // Retorna apenas MM:SS
+    }
+
+    // Se houver horas, formate como HH:MM:SS
+    return `${hours}:${minutes}:${seconds}`;
+}
+
 
   onSubmit() {
     const videoUrl = this.musicForm.get('link')?.value;
