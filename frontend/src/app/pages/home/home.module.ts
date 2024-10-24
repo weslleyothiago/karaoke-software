@@ -6,9 +6,10 @@ import { HomePage } from './home.page';
 
 import { HomePageRoutingModule } from './home-routing.module';
 import { MusicCardComponent } from 'src/app/components/music-card/music-card.component';
+import { MusicListComponent } from 'src/app/components/music-list/music-list.component';
 
 @NgModule({
   imports: [CommonModule, FormsModule, IonicModule, HomePageRoutingModule],
-  declarations: [HomePage, MusicCardComponent],
+  declarations: [HomePage, MusicCardComponent, MusicListComponent],
 })
 export class HomePageModule {}
