@@ -17,4 +17,16 @@ export class MusicService {
       }
      });
   }
+
+  async findAll() {
+    return this.prisma.musica.findMany();
+  }
+
+  async findOne (id: string) {
+    return this.prisma.musica.findUnique({
+      where: {
+        id: Number(id)
+      }
+    })
+  }
 }

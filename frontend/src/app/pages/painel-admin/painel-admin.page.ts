@@ -11,6 +11,10 @@ import { LoadingController } from '@ionic/angular';
   styleUrls: ['./painel-admin.page.scss'],
 })
 export class PainelAdminPage implements OnInit {
+  genres: string[] = [];
+  filteredGenres: string[] = [];
+  searchGenre: string = '';
+
   musicForm!: FormGroup;
   videoDuration: string | null = null;
   musicPreview: { title: string; artist: string; thumbnail: string } | null = null;
@@ -50,6 +54,11 @@ export class PainelAdminPage implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.musicService.getGenres().subscribe((genres) => {
+      this.genres = genres;
+      this.filteredGenres = [...genres];
+    });
+
     this.musicForm = this.formBuilder.group({
       title: ['', Validators.required],
       artist: ['', Validators.required],
@@ -59,6 +68,11 @@ export class PainelAdminPage implements OnInit {
 
     this.musicForm.get('title')?.valueChanges.subscribe(() => this.updateSlug());
     this.musicForm.get('artist')?.valueChanges.subscribe(() => this.updateSlug());
+  }
+
+  filterGenres(event: any) {
+    const searchGenre = event.target.value.toLowerCase();
+    this.filteredGenres = this.genres.filter((genre) => genre.toLowerCase().includes(searchGenre));
   }
 
   updateSlug() {
@@ -135,7 +149,6 @@ export class PainelAdminPage implements OnInit {
           // Somente reseta se a resposta for um sucesso
           this.musicPreview = null;
           this.musicForm.reset();
-          console.log(this.videoDuration)
         },
         error: (error) => {
           console.error('Erro ao registrar música: ', error);

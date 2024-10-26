@@ -7,11 +7,16 @@ import { Music } from './music.model';
   providedIn: 'root',
 })
 export class MusicService {
-  private baseUrl = 'http://localhost:3333/music';
+  private baseUrl = 'http://localhost:3333/musics';
 
   constructor(private http: HttpClient) {}
 
   create(music: Music): Observable<Music> {
     return this.http.post<Music>(this.baseUrl, music);
   }
+
+  getGenres(): Observable<string[]> {
+    return this.http.get<string[]>(this.baseUrl);
+  }
+
 }
